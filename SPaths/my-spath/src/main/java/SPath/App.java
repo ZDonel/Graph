@@ -5,41 +5,14 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.util.LinkedList;
 import java.util.Scanner;
-import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
 
-/**
- * Hello world!
- *
- */
-public class App extends Application {
+/*
+ * Graph programs driver file, console interface
+ * edited depending on purpose
+ * */
+public class App {
 
     public static void main(String[] args) {
-        launch(args);
-    }
-
-    @Override
-    public void init() throws Exception {
-        // TODO Auto-generated method stub
-        super.init();
-    }
-
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        Button btn = new Button("Calculate Shortest Path");
-        TextArea inputFile = new TextArea();
-        StackPane root = new StackPane();
-        root.getChildren().add(inputFile);
-        root.getChildren().add(btn);
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("My Test App");
-        primaryStage.show();
-        // TODO Auto-generated method stub
         Scanner kb = new Scanner(System.in);
         FileWriter myFile = null;
         String fn = "";
@@ -98,5 +71,7 @@ public class App extends Application {
         }
         kb.close();
     }
+
+
 }
 

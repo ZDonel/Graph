@@ -2,13 +2,21 @@ package SPath;
 
 import java.util.LinkedList;
 
+
+/*
+ * Class to store and find shortest path for graphs using Dijkstra's/Bellman-Ford/Floyd-Warshall alg
+ * Graphs are stored as an adjacency matrix
+ * Other information such as eccentricity is also trackable
+ * */
 public class Graph {
     int[][] adj;
     boolean[] explored;
-    int[] ecc;//eccentricity
-    int[] deg;//degree
+    int[] ecc;//eccentricity(greatest distance to another vertex)
+    int[] deg;//degree of vertex
 
-    public Graph(final Graph g){
+
+    //copy a given graph
+    public Graph(Graph g){
         adj = new int[g.adj.length][g.adj.length];
         explored = new boolean[g.adj.length];
         ecc = new int[g.adj.length];
@@ -22,8 +30,9 @@ public class Graph {
         }
     }
 
-    public Graph(final LinkedList<String> edges, final boolean directed) {
-        final int vCount = edges.size();
+    //create graph from list of edges
+    public Graph(LinkedList<String> edges, boolean directed) {
+         int vCount = edges.size();
         adj = new int[vCount][vCount];
         for (int i = 0; i < adj.length; i++) {//initialize all edges to 0
             for (int j = 0; j < adj.length; j++) {
@@ -36,7 +45,7 @@ public class Graph {
             deg[i] = 0;
         }
         String[] temp = new String[2];
-        for(final String e : edges) {//parse input strings to edge capacity
+        for(String e : edges) {//parse input strings to edge capacity
             temp = e.split(" ", 2);
             from = Integer.parseInt(temp[0]);
             if(temp.length==1) {continue;}
@@ -67,8 +76,8 @@ public class Graph {
      * does not check edge weights 
      * u parameter is label of vertex to use as source
      */
-    public int[] DijPath(final int src) {
-        final int[] sPaths = new int [adj.length];
+    public int[] DijPath(int src) {
+        int[] sPaths = new int [adj.length];
         for (int i = 0; i < sPaths.length; i++) {
             if(adj[src][i]!=0){
                 sPaths[i] = adj[src][i];
@@ -79,7 +88,7 @@ public class Graph {
         sPaths[src] = 0;
         explored[src] = true;
         for (int i = 0; i < explored.length-1; i++) {  
-            final int u = findMin(sPaths);
+            int u = findMin(sPaths);
             for (int v = 0; v < sPaths.length; v++) {
                 if(adj[u][v] != 0 && sPaths[u]+adj[u][v] < sPaths[v]){
                     sPaths[v] = sPaths[u]+adj[u][v];
@@ -92,7 +101,7 @@ public class Graph {
     
     /* Used in Dij to find minimum discovered vertex in graph
      */
-    public int findMin(final int[] arr){
+    public int findMin(int[] arr){
         int min = Integer.MAX_VALUE;
         for (int i = 0; i < arr.length; i++) {
             if(arr[i] < min && explored[i] == false)
@@ -104,8 +113,8 @@ public class Graph {
     /*Used to find single source shortest path in graph with neg(-) weight edges no neg cycles 
      * Used to find SP for each node in FW
      */
-    public int[] BFPath(final int src){
-        final int[] sPaths = new int[adj.length];
+    public int[] BFPath(int src){
+        int[] sPaths = new int[adj.length];
         for (int i = 0; i < sPaths.length; i++) {
             if(adj[src][i] != 0){
                 sPaths[i] = adj[src][i];
@@ -150,7 +159,7 @@ public class Graph {
      * used to get ecc for graph
      */
     public int[][] FWPath() {
-        final int[][] sPaths = new int[adj.length][adj.length];
+        int[][] sPaths = new int[adj.length][adj.length];
         int[] nodeSPs = new int[adj.length];
         for (int i = 0; i < sPaths.length; i++) {
             System.out.println(i);
@@ -165,7 +174,7 @@ public class Graph {
     /* Calculates maximum SP length for each node and records in ecc
      * */
     public void getEcc() {
-        final int[][] sPaths = FWPath();
+        int[][] sPaths = FWPath();
         for (int i = 0; i < ecc.length; i++) {
             int t = 0;
             for (int j = 0; j < sPaths.length; j++) {
@@ -189,18 +198,6 @@ public class Graph {
             read += "}\n";
         }
         return read;
-    }
-
-    /* Used to find Hamiltonian Cycle in graph
-     * 
-     * */
-    public int[] HCycle(final int src){
-        final int[] cycle = new int[adj.length];
-        final Graph R = new Graph(this);
-        for (int i = 0; i < cycle.length; i++) {
-            i = R.adj[i][i];
-        }
-        return cycle;
     }
 
 }
