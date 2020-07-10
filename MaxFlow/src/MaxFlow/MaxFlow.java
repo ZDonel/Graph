@@ -12,15 +12,18 @@ import javafx.application.Application;
 
 public class MaxFlow {
 
+
+	/*some variables may not be used based on needed info
+	 **/
 	@SuppressWarnings("unused")
 	public static void main(String[] args) throws Exception {
 		Scanner kb = new Scanner(System.in);
 		FileWriter myFile = null;
 		String fn = "";
-		int size, maxC, maxFF, maxD, maxEK;//some variables may not be used based on needed info
+		int size, maxC, maxFF, maxD, maxEK;
 		File file = null;
 		Scanner read = null;
-		double time1, time2, time3;//some variables may not be used based on needed info
+		double time1, time2, time3;
 		FileInputStream fin;
 		LinkedList<String> GAL;
 		Graph graph;
@@ -99,6 +102,7 @@ public class MaxFlow {
 	
 	/*Graph class used to calculate max flows*/
 	public static class Graph {
+		
 		/*Vertex used in Graph*/
 		public class Vertex {
 			
@@ -242,7 +246,6 @@ public class MaxFlow {
 				temp = e.split(" ", 2);
 				from = Integer.parseInt(temp[0]);
 				if(temp.length==1) {v[from].label = from;continue;}
-				//System.out.println(from+"\n\""+temp[0]+"\", "+"\""+temp[1]+"\"");
 				temp = temp[1].split(":", 2);
 				while(true) {
 					to = Integer.parseInt(temp[0]);
@@ -289,6 +292,10 @@ public class MaxFlow {
 			sink = v[v.length-1];
 		}
 		
+		/**
+		 * 
+		 * @param vert used to copy other graph vertex without creating new edges
+		 */
 		public Graph(int vert) {
 			v = new Vertex[vert];
 			for(int i = 0; i < v.length; i++) {
@@ -506,25 +513,6 @@ public class MaxFlow {
 			}
 		}
 		
-		/*Method to create residual graph from base graph
-		 *Adds in back edges with capacity 0
-		 *no longer needed as this has been passed to Graph(Graph g) method*/
-		/*public Graph CreateRGraph() {
-			Graph R = new Graph(this);
-			LinkedList<Edge> temp = new LinkedList<Edge>();
-			for(Vertex vert : R.v) {
-				for(Edge e : vert.adj) {
-					temp.add(e.createBEdge());
-				}
-			}
-			for(Edge e : temp) {
-				R.v[e.from].adj.add(e);
-			}
-			R.source = R.v[0];
-			R.sink = R.v[v.length-1];
-			return R;
-			}*/
-		
 		/*Method to create Level graph for Dinic's Algorithm
 		 *removes edges between vertices at the same "level" of the BFS*/
 		public Graph CreateLGraph() {
@@ -559,6 +547,7 @@ public class MaxFlow {
 			return L;
 		}
 		
+		//counts total edges in graph for runtime purposes
 		public int countEdges() {
 			int total = 0;
 			for(Vertex vert : this.v) {
